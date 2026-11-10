@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EmpreendeJá - Seu Primeiro Negócio</title>
+<style>
+  :root {
+    --primary: #1e40af;
+    --primary-dark: #1e3a8a;
+    --secondary: #64748b;
+    --accent-red: #dc2626;
+    --accent-yellow: #eab308;
+    --success: #16a34a;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --text: #1e293b;
+    --border: #cbd5e1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary), #3b82f6);
+    color: white;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  header h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
+  header p { opacity: 0.9; font-size: 0.95rem; }
+  nav {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  nav button {
+    flex: 1;
+    min-width: 120px;
+    padding: 0.9rem 0.5rem;
+    border: none;
+    background: none;
+    font-weight: 600;
+    color: var(--secondary);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  nav button.active {
+    color: var(--primary);
+    border-bottom-color: var(--accent-yellow);
+    background: #f1f5f9;
+  }
+  main { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid var(--border);
+  }
+  h2 { color: var(--primary); margin-bottom: 1rem; font-size: 1.4rem; }
+  h3 { margin: 1rem 0 0.5rem; font-size: 1.1rem; }
+  label { display: block; margin: 0.8rem 0 0.3rem; font-weight: 500; }
+  input, select, textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  textarea { min-height: 80px; resize: vertical; }
+  button.primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.2s;
+  }
+  button.primary:hover { background: var(--primary-dark); }
+  .result {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  .tip {
+    background: #fefce8;
+    border-left: 4px solid var(--accent-yellow);
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.95rem;
+  }
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--secondary);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 600px) {
+    nav button { font-size: 0.85rem; padding: 0.7rem 0.3rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>🚀 EmpreendeJá</h1>
+  <p>Seu guia offline para começar um negócio</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showSection('ideias')">💡 Validar Ideia</button>
+  <button onclick="showSection('calculadora')">💰 Calculadora</button>
+  <button onclick="showSection('dicas')">📘 Dicas</button>
+</nav>
+
+<main>
+  <!-- Validar Ideia -->
+  <section id="ideias" class="section active">
+    <div class="card">
+      <h2>Valide sua Ideia de Negócio</h2>
+      <p>Responda às perguntas para receber um feedback inicial sobre sua ideia.</p>
+      
+      <label>Qual problema sua ideia resolve?</label>
+      <textarea id="problema" placeholder="Ex: Pessoas têm dificuldade de encontrar comida saudável perto do trabalho..."></textarea>
+      
+      <label>Quem é o seu público-alvo?</label>
+      <input type="text" id="publico" placeholder="Ex: Jovens de 15 a 25 anos que estudam ou trabalham">
+      
+      <label>Qual o diferencial da sua ideia?</label>
+      <textarea id="diferencial" placeholder="O que torna sua solução diferente das outras?"></textarea>
+      
+      <label>Quanto você acha que as pessoas pagariam?</label>
+      <input type="text" id="preco" placeholder="Ex: R$ 15 a R$ 30 por unidade">
+      
+      <button class="primary" onclick="validarIdeia()">Analisar Ideia</button>
+      
+      <div id="resultado-ideia"></div>
+    </div>
+  </section>
+
+  <!-- Calculadora -->
+  <section id="calculadora" class="section">
+    <div class="card">
+      <h2>Calculadora de Custos e Preço</h2>
+      <p>Calcule o custo básico e sugestão de preço de venda.</p>
+      
+      <label>Custo dos materiais / insumos (R$)</label>
+      <input type="number" id="custo-material" step="0.01" placeholder="0.00">
+      
+      <label>Outros custos (embalagem, transporte, etc.) (R$)</label>
+      <input type="number" id="outros-custos" step="0.01" placeholder="0.00">
+      
+      <label>Quantidade produzida / vendida</label>
+      <input type="number" id="quantidade" placeholder="1">
+      
+      <label>Margem de lucro desejada (%)</label>
+      <input type="number" id="margem" placeholder="30" value="30">
+      
+      <button class="primary" onclick="calcular()">Calcular</button>
+      
+      <div id="resultado-calc"></div>
+    </div>
+  </section>
+
+  <!-- Dicas -->
+  <section id="dicas" class="section">
+    <div class="card">
+      <h2>Dicas para Jovens Empreendedores</h2>
+      
+      <div class="tip">
+        <strong>Comece pequeno:</strong> Não precisa de muito dinheiro no início. Teste sua ideia com poucos recursos e aprenda com o feedback real dos clientes.
+      </div>
+      
+      <div class="tip">
+        <strong>Fale com potenciais clientes:</strong> Antes de investir, converse com pelo menos 10 pessoas que poderiam comprar seu produto ou serviço.
+      </div>
+      
+      <div class="tip">
+        <strong>Anote tudo:</strong> Use um caderno ou aplicativo simples para controlar gastos e vendas desde o primeiro dia.
+      </div>
+      
+      <div class="tip">
+        <strong>Aprenda constantemente:</strong> Cursos do SENAI, YouTube e livros gratuitos são ótimas fontes de conhecimento sobre gestão, vendas e produção.
+      </div>
+      
+      <div class="tip">
+        <strong>Formalização:</strong> Quando o negócio crescer, pesquise sobre MEI (Microempreendedor Individual) — é uma forma simples e barata de formalizar no Brasil.
+      </div>
+      
+      <div class="tip">
+        <strong>Persistência:</strong> A maioria dos negócios demora um pouco para dar certo. Continue melhorando sua ideia com base no que os clientes realmente precisam.
+      </div>
+      
+      <h3>Próximos passos recomendados</h3>
+      <ul style="margin-left: 1.2rem; margin-top: 0.5rem;">
+        <li>Defina claramente o que você vai vender</li>
+        <li>Calcule seus custos com a calculadora</li>
+        <li>Faça uma lista de 5 possíveis clientes</li>
+        <li>Crie um protótipo simples ou faça uma venda teste</li>
+        <li>Peça feedback e ajuste sua ideia</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  EmpreendeJá • Aplicativo offline desenvolvido para o Mundo SENAI • Curso de Desenvolvimento de Sistemas
+</footer>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  
+  // Marca o botão correto como ativo
+  const buttons = document.querySelectorAll('nav button');
+  buttons.forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(id)) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function validarIdeia() {
+  const problema = document.getElementById('problema').value.trim();
+  const publico = document.getElementById('publico').value.trim();
+  const diferencial = document.getElementById('diferencial').value.trim();
+  const preco = document.getElementById('preco').value.trim();
+  
+  let pontuacao = 0;
+  let feedback = [];
+  
+  if (problema.length > 20) { pontuacao += 25; feedback.push("✅ Problema bem descrito"); }
+  else feedback.push("⚠️ Tente descrever melhor o problema que você resolve");
+  
+  if (publico.length > 10) { pontuacao += 25; feedback.push("✅ Público-alvo definido"); }
+  else feedback.push("⚠️ Seja mais específico sobre quem vai comprar");
+  
+  if (diferencial.length > 15) { pontuacao += 25; feedback.push("✅ Diferencial identificado"); }
+  else feedback.push("⚠️ Pense no que torna sua ideia única");
+  
+  if (preco.length > 3) { pontuacao += 25; feedback.push("✅ Preço inicial pensado"); }
+  else feedback.push("⚠️ Defina uma faixa de preço");
+  
+  // Níveis de sucesso
+  let nivel, cor, descricao;
+  if (pontuacao >= 75) {
+    nivel = "Alto";
+    cor = "#16a34a";
+    descricao = "Sua ideia tem uma boa base para avançar!";
+  } else if (pontuacao >= 50) {
+    nivel = "Médio";
+    cor = "#eab308";
+    descricao = "Sua ideia é promissora, mas ainda pode melhorar em alguns pontos.";
+  } else {
+    nivel = "Baixo";
+    cor = "#dc2626";
+    descricao = "Sua ideia precisa ser melhor desenvolvida antes de avançar.";
+  }
+  
+  document.getElementById('resultado-ideia').innerHTML = `
+    <div class="result">
+      <h3 style="color:${cor}">Chance de sucesso: ${pontuacao}% — Nível ${nivel}</h3>
+      <div style="background:#e2e8f0; border-radius:8px; height:14px; margin:0.6rem 0; overflow:hidden;">
+        <div style="width:${pontuacao}%; height:100%; background:${cor}; transition:width 0.4s;"></div>
+      </div>
+      <p style="margin-bottom:0.8rem;"><strong>${descricao}</strong></p>
+      <ul style="margin: 0.5rem 0 0 1.2rem;">
+        ${feedback.map(f => `<li>${f}</li>`).join('')}
+      </ul>
+      <p style="margin-top:0.8rem;"><strong>Dica:</strong> Quanto mais clara for sua ideia, mais fácil será avançar nos próximos passos.</p>
+    </div>
+  `;
+}
+
+function calcular() {
+  const material = parseFloat(document.getElementById('custo-material').value) || 0;
+  const outros = parseFloat(document.getElementById('outros-custos').value) || 0;
+  const qtd = parseInt(document.getElementById('quantidade').value) || 1;
+  const margem = parseFloat(document.getElementById('margem').value) || 30;
+  
+  const custoTotal = material + outros;
+  const custoUnitario = custoTotal / qtd;
+  const precoSugerido = custoUnitario * (1 + margem / 100);
+  const lucroUnitario = precoSugerido - custoUnitario;
+  
+  // Calcula percentual de sucesso baseado na margem
+  let percentual = Math.min(Math.max(margem * 1.5, 20), 95); // margem 30% ≈ 45%, margem 50% ≈ 75%
+  percentual = Math.round(percentual);
+  
+  let nivel, cor, descricao;
+  if (percentual >= 75) {
+    nivel = "Alto";
+    cor = "#16a34a";
+    descricao = "Ótima margem de lucro! Seu preço tem boa chance de sucesso.";
+  } else if (percentual >= 50) {
+    nivel = "Médio";
+    cor = "#eab308";
+    descricao = "Margem razoável. Avalie se o preço é competitivo no mercado.";
+  } else {
+    nivel = "Baixo";
+    cor = "#dc2626";
+    descricao = "Margem baixa. Considere aumentar o preço ou reduzir custos.";
+  }
+  
+  document.getElementById('resultado-calc').innerHTML = `
+    <div class="result">
+      <h3>Resultado do Cálculo</h3>
+      <p><strong>Custo total:</strong> R$ ${custoTotal.toFixed(2)}</p>
+      <p><strong>Custo por unidade:</strong> R$ ${custoUnitario.toFixed(2)}</p>
+      <p><strong>Preço sugerido de venda:</strong> R$ ${precoSugerido.toFixed(2)}</p>
+      <p><strong>Lucro estimado por unidade:</strong> R$ ${lucroUnitario.toFixed(2)}</p>
+      
+      <h3 style="color:${cor}; margin-top:1.2rem;">Chance de sucesso do preço: ${percentual}% — Nível ${nivel}</h3>
+      <div style="background:#e2e8f0; border-radius:8px; height:14px; margin:0.6rem 0; overflow:hidden;">
+        <div style="width:${percentual}%; height:100%; background:${cor}; transition:width 0.4s;"></div>
+      </div>
+      <p><strong>${descricao}</strong></p>
+      
+      <p style="margin-top:0.8rem; font-size:0.9rem;">* Este é um cálculo simplificado. Não inclui impostos, taxas ou custos fixos.</p>
+    </div>
+  `;
+}
+
+// Inicializar
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('nav button').classList.add('active');
+});
+</script>
+</body>
+</html>
